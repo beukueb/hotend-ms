@@ -1,0 +1,509 @@
+* General
+  #+BEGIN_SRC sh
+    npm install -g typings
+    npm install -g typescript
+    npm install -g ts-node #REPL typescript node
+    npm install -g @angular/cli
+    npm install -g firebase-tools
+    #npm install -g bower #package manager
+    #npm install -g gulp  #task manager
+  #+END_SRC
+** Update
+   To upgrade node/npm => https://nodejs.org/en/download/
+   #+BEGIN_SRC sh
+     npm update -g
+   #+END_SRC
+* Make Firebase project
+  - https://console.firebase.google.com/
+  - select "Adding Firebase to web app" to copy config
+* Init angular cli
+** Setup
+   https://coursetro.com/posts/code/54/Angular-4-Firebase-Tutorial:-Make-a-Simple-Angular-4-App
+   #+BEGIN_SRC sh
+    ng new exsite
+    cd exsite
+    npm install --save angularfire2 firebase
+    npm install --save normalize.css bootstrap@4.0.0-alpha.6 font-awesome tether
+    npm install --save @ng-bootstrap/ng-bootstrap
+  #+END_SRC
+** Insert Firebase config in src/app/app.module.ts
+   #+BEGIN_SRC js
+     import { AngularFireModule } from 'angularfire2';
+     import { AngularFireDatabaseModule } from 'angularfire2/database';
+     import { AngularFireAuthModule } from 'angularfire2/auth';
+
+     export const firebaseConfig = {
+       apiKey: "",
+       authDomain: "",
+       databaseURL: "",
+       storageBucket: "",
+       messagingSenderId: ""
+     };
+   #+END_SRC
+   - Add 
+     AngularFireModule.initializeApp(firebaseConfig),
+     AngularFireDatabaseModule,
+     AngularFireAuthModule
+     => to ngModule imports array
+   - For uploading to firebase storage see:
+     https://github.com/codediodeio/angular-firestarter/
+     - Firebase storage rules
+       #+BEGIN_SRC js
+         service firebase.storage {
+           match /b/rybina-a22ae.appspot.com/o {
+             match /images/* {
+               allow read: if true; 
+             }
+             match /{allPaths=**} {
+               allow read, write: if request.auth != null;
+             }
+           }
+         }
+       #+END_SRC
+** Add routing
+   https://angular.io/guide/router
+   - Make navigation component: `ng generate component nav` and a
+     component for each route that will be added (also footer)
+   - Add component `<app-nav></app-nav>` to
+     src/app/app.component.html
+   - Add nav html in src/app/nav/nav.component.html
+     #+BEGIN_SRC html
+       <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
+         <a class="navbar-brand" href="/">Restaurant 't Pandreitje</a>
+         <ul class="nav navbar-nav mr-auto">
+           <li class="nav-item active">
+             <a class="nav-link" routerLink="/" routerLinkActive="active">Home</a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link" routerLink="/about" routerLinkActive="active">About</a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link" routerLink="/contact" routerLinkActive="active">Contact</a>
+           </li>
+         </ul>
+         <ul class="nav navbar-nav">
+           <li class="nav-item">
+             <a class="nav-link" href="https://twitter.com/@pandreitje"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+           </li>
+           <!--li class="nav-item">
+             <a class="nav-link" href="https://github.com/beukueb"><i class="fa fa-github" aria-hidden="true"></i></a>
+           </li-->
+         </ul>
+       </nav>
+     #+END_SRC
+   - Add:
+     import { RouterModule, Routes } from '@angular/router';
+     => to src/app/app.module.ts
+   - Add routing config:
+     #+BEGIN_SRC js
+       //Example
+       const appRoutes: Routes = [
+         { path: 'home', component: HomeComponent },
+         { path: 'menu', component: MenuComponent },
+         { path: 'menu_admin', component: MenuadminComponent },
+         //{ path: 'hero/:id',      component: HeroDetailComponent },
+         /*{
+           path: 'heroes',
+           component: HeroListComponent,
+           data: { title: 'Heroes List' }
+         },*/
+         { path: '',
+           redirectTo: '/home',
+           pathMatch: 'full'
+         },
+         //{ path: '**', component: PageNotFoundComponent }
+       ];
+
+     #+END_SRC
+     - Add `RouterModule.forRoot(appRoutes)` to NgModule->imports
+     - Change src/app/app.component.html to:
+       #+BEGIN_SRC html
+         <app-nav></app-nav>
+         <div class="container">
+           <div class="starter-template">
+             <router-outlet></router-outlet>
+           </div>
+         </div>
+         <app-footer></app-footer>
+       #+END_SRC
+
+** Add style
+*** bootstrap and font-awesome
+    https://medium.com/@beeman/tutorial-add-bootstrap-to-angular-cli-apps-b0a652f2eb2
+    https://ng-bootstrap.github.io/#/getting-started
+    - Add:
+      @import "~bootstrap/dist/css/bootstrap.min.css";
+      @import "~font-awesome/css/font-awesome.css";
+      => to src/styles.css
+    - Modify:
+      "scripts": [
+"../node_modules/jquery/dist/jquery.js",
+"../node_modules/tether/dist/js/tether.js", "../node_modules/bootstrap/dist/js/bootstrap.js"]
+      to .angular-cli.json
+
+*** Change css default to sass scss
+    - in .angular-cli.json make following change:
+      "styles": [
+       	"styles.scss"
+      ],
+    - rename 'styles.css' to 'styles.scss'
+    - in styles.scss:
+      @import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+*** Start with different bootstrap template
+    
+** Add ng-bootstrap widget
+   https://ng-bootstrap.github.io/#/home
+   - Add `import {NgbModule} from '@ng-bootstrap/ng-bootstrap';` to src/app/app.module.ts
+   - Add `NgbModule.forRoot()` to the NgModule imports array
+*** Carousel
+    - Add to component ts:
+      - `import {NgbCarouselConfig} from '@ng-bootstrap/ng-bootstrap';`
+      - `NgbCarouselConfig` to Component providers array
+      - `constructor(config: NgbCarouselConfig) {
+           // customize default values of carousels used by this component tree
+           config.interval = 10000;
+           config.wrap = false;
+           config.keyboard = false;}`
+    - Add to component html
+      #+BEGIN_SRC html
+        <ngb-carousel>
+          <ng-template ngbSlide>
+            <img src="assets/images/home/pand1.jpg" alt="View on terrace" width="100%">
+            <div class="carousel-caption">
+              <h3>Restaurant 't Pandreitje</h3>
+              <p>where you feel at home ...</p>
+            </div>
+          </ng-template>
+          <ng-template ngbSlide>
+            <img src="assets/images/home/pand2.jpg" alt="Terrace" width="100%">
+            <div class="carousel-caption">
+              <h3>Comfortable dining atmosphere</h3>
+              <p>On the terrace or inside ...</p>
+            </div>
+          </ng-template>
+          <ng-template ngbSlide>
+            <img src="assets/images/home/pand3.jpg" alt="Evening view" width="100%">
+            <div class="carousel-caption">
+              <h3>Evening setting</h3>
+              <p>For every occasion ...</p>
+            </div>
+          </ng-template>
+        </ngb-carousel>
+      #+END_SRC
+    - Add images to assets/images/
+** i18n
+   https://angular.io/guide/i18n
+   - add `i18n` as attribute to each element that needs translation
+     - help translator with description/meaning and id `i18n[="[meaning|]description[@@id]"]`
+       => e.g. <ng-container i18n="An introduction header for this sample">Hello
+       i18n!</ng-container> 
+   - add `i18n-attributeName` for attributes that contain text that
+     needs translation
+   - from app root, to make translation files: `./node_modules/.bin/ng-xi18n --i18nFormat=xlf`
+     - if not working try first: `npm install @angular/compiler-cli @angular/platform-server --save`
+   - `mkdir src/locale`
+   - for each language that needs translation: `cp messages.xlf src/locale/messages.nl.xlf`
+   - translate with XLIFF editor
+   - compile for each language:
+     `./node_modules/.bin/ngc --i18nFile=./locale/messages.es.xlf --locale=es --i18nFormat=xlf --missingTranslation=error`
+   
+** locale info
+   - add `Inject` to @angular/core imports
+   - add `@Inject(LOCALE_ID) locale: string` to contructor parameters
+   - in constructor, e.g. `console.log(locale);`
+** placeholder images
+   - /width[xheight][.type][/bgcolor][/fgcolor][?text=lorem]
+   - http://via.placeholder.com/900x300.png/333333/000000?text=carousel1
+* Deploy
+  - in root `firebase init`
+  - in app/app.module.ts:
+    - add `import { LocationStrategy, HashLocationStrategy} from '@angular/common';`
+    - add 
+      `{ provide: LocationStrategy, useClass: HashLocationStrategy }` 
+      to NgModule providers
+  - change `firebase.json` to
+    #+BEGIN_SRC js
+      {
+        "hosting": {
+          "public": "dist",
+          "ignore": [
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**"
+          ]/*,
+            "rewrites": [ {
+                "source": "**",
+                "destination": "/index.html"
+            } ]*/
+        }
+      }
+    #+END_SRC
+  - `ng build --prod`
+  - `firebase deploy`
+* Init archive
+  #+BEGIN_SRC sh
+    mkdir pandagular && cd pandangular && git init
+    bower init
+
+    #dir structure
+    mkdir -p src/{app,sass}
+    cat - > .gitignore <<EOF
+    bower_components
+    node_modules
+    EOF
+
+    #bower
+    bower install bootstrap-sass-official --save  
+    bower install fontawesome --save
+
+    #npm
+    echo '{}' > package.json
+    npm install gulp gulp-ruby-sass gulp-notify gulp-bower --save-dev
+    npm install es6-shim reflect-metadata rxjs zone.js systemjs core-js --save
+    npm install @angular/core @angular/common @angular/compiler \
+        @angular/platform-browser @angular/platform-browser-dynamic \
+        @angular/forms @angular/router --save
+    npm install firebase angularfire2 --save
+
+    #gulp
+    cat - > gulpfile.js <<EOF
+    var gulp = require('gulp'), 
+        sass = require('gulp-ruby-sass') ,
+        notify = require("gulp-notify") ,
+        bower = require('gulp-bower');
+
+    var config = {
+        typePath: './src',
+        sassPath: './src/sass',
+        bowerDir: './bower_components' ,
+        buildDir: './build'
+    }
+
+    const spawn = require('child_process').spawn;
+
+    var reportCMD = function(cmd) {
+        cmd.stdout.on('data', (data) => {
+            console.log(data.toString().trim());
+        });
+        
+        cmd.stderr.on('data', (data) => {
+            console.log(\`stderr: \${data}\`);
+        });
+        
+        cmd.on('close', (code) => {
+            console.log(\`child process exited with code \${code}\`);
+        });    
+    }
+
+    gulp.task('clean', function() {
+        let cmd = spawn('git', ['clean', '-f']);
+        reportCMD(cmd);
+        spawn('rm',['-rf','build/']);
+    });
+     
+    gulp.task('compile', function() {
+        let cmd = spawn('tsc', ['-p', 'src']);
+        reportCMD(cmd);
+    });
+
+    gulp.task('build', ['compile','css'], function() {
+                                    gulp.src('./src/*.{html,js}')
+                                   .pipe(gulp.dest(config.buildDir));
+    });
+
+    gulp.task('serve', function() {
+        let cmd = spawn('lite-server', ['-c', 'src/bs-config.json']);
+        reportCMD(cmd);
+    });
+
+    gulp.task('bower', function() { 
+                       return bower()
+                       .pipe(gulp.dest(config.bowerDir)) 
+    });
+
+    gulp.task('icons', function() { 
+                       return gulp.src(config.bowerDir + '/fontawesome/fonts/**.*') 
+                       .pipe(gulp.dest('./build/fonts')); 
+    });
+
+    gulp.task('css', function() { 
+        return sass(config.sassPath + '/style.scss',{
+            style: 'compressed',
+            loadPath: [
+                './resources/sass',
+                config.bowerDir + '/bootstrap-sass/assets/stylesheets',
+                config.bowerDir + '/font-awesome/scss',
+            ]
+        })
+        .pipe(gulp.dest('./build/css')); 
+    });
+
+    // Rerun the task when a file changes
+    gulp.task('watch', ['serve'], function() {
+        gulp.watch(config.sassPath + '/**/*.scss', ['css']); 
+        gulp.watch(config.typePath + '/**/*.ts', ['compile']); 
+    });
+
+    gulp.task('default', ['bower', 'icons', 'css']);
+    EOF
+
+    #Starting templates
+    cat - > src/index.html <<EOF
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Angular Manual QuickStart</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <base href="/">
+        <link rel="stylesheet" href="styles.css">
+
+        <!-- Polyfill(s) for older browsers -->
+        <script src="node_modules/core-js/client/shim.min.js"></script>
+
+        <script src="node_modules/zone.js/dist/zone.js"></script>
+        <script src="node_modules/systemjs/dist/system.src.js"></script>
+
+        <script src="systemjs.config.js"></script>
+        <script>
+          System.import('main.js').catch(function(err){ console.error(err); });
+        </script>
+      </head>
+
+      <body>
+        <my-app>Loading AppComponent content here ...</my-app>
+      </body>
+    </html>
+    EOF
+
+    cat - > src/main.ts <<EOF
+    import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+    import { AppModule }              from './app/app.module';
+
+    platformBrowserDynamic().bootstrapModule(AppModule);
+    EOF
+
+    cat - > src/app/app.component.ts <<EOF
+    import { Component } from '@angular/core';
+
+    @Component({
+      selector: 'my-app',
+      template: \`<h1>Hello {{name}}</h1>\`
+    })
+    export class AppComponent { name = 'Angular'; }
+    EOF
+
+    cat - > src/app/app.module.ts <<EOF
+    import { NgModule }      from '@angular/core';
+    import { BrowserModule } from '@angular/platform-browser';
+    import { AppComponent }  from './app.component';
+
+    @NgModule({
+      imports:      [ BrowserModule ],
+      declarations: [ AppComponent ],
+      bootstrap:    [ AppComponent ]
+    })
+    export class AppModule { }
+    EOF
+
+    cat - > src/sass/style.scss <<EOF
+    @import url(http://fonts.googleapis.com/css?family=Raleway:400,700,300);
+    \$font-family-base: 'Raleway', sans-serif;
+    // Import bootstrap and fontawesome
+    @import "bootstrap";
+    @import "font-awesome";
+    //...
+    EOF
+
+    cat - > src/systemjs.config.js <<EOF
+    /**
+     ,* System configuration for Angular applications.
+     ,* Adjust as necessary for your application needs.
+     ,*/
+    (function (global) {
+      System.config({
+        paths: {
+          // paths serve as alias
+          'npm:': 'node_modules/'
+        },
+        // map tells the System loader where to look for things
+        map: {
+          // our app is within the app folder
+          app: 'app',
+
+          // angular bundles
+          '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
+          '@angular/common': 'npm:@angular/common/bundles/common.umd.js',
+          '@angular/compiler': 'npm:@angular/compiler/bundles/compiler.umd.js',
+          '@angular/platform-browser': 'npm:@angular/platform-browser/bundles/platform-browser.umd.js',
+          '@angular/platform-browser-dynamic': 'npm:@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js',
+          '@angular/http': 'npm:@angular/http/bundles/http.umd.js',
+          '@angular/router': 'npm:@angular/router/bundles/router.umd.js',
+          '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
+
+          // other libraries
+          'rxjs':                      'npm:rxjs',
+          'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js'
+        },
+        // packages tells the System loader how to load when no filename and/or no extension
+        packages: {
+          app: {
+            defaultExtension: 'js'
+          },
+          rxjs: {
+            defaultExtension: 'js'
+          }
+        }
+      });
+     })(this);
+    EOF
+
+    cat - > src/tsconfig.json <<EOF
+    {
+      "compilerOptions": {
+        "outDir": "../build",
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "lib": [ "es2015", "dom" ],
+        "noImplicitAny": true,
+        "suppressImplicitAnyIndexErrors": true
+      }
+    }
+    EOF
+
+    #For the development browsersync/lite-server configuration
+    cat - > src/bs-config.json <<EOF
+    {
+      "server": {
+        "baseDir": "build",
+        "routes": {
+          "/node_modules": "node_modules",
+          "/bower_components": "bower_components"
+        }
+      }
+    }
+    EOF
+
+    # Firebase config
+    firebase init
+  #+END_SRC
+
+** Required pandreitje components
+   - MainComponent
+     - Header
+       - Navigation
+       - LanguageSelection
+     - Body
+       - depending on router
+         - Landing page 
+	 - Menus
+	 - Reservations
+	 - Contact
+	 - About
+     - Footer
+       - Address
