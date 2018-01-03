@@ -1,0 +1,10 @@
+<ul>
+  <li *ngFor="let primitive of primitivesList">
+    {{ primitive[0] }} {{ primitive[1]['js'] }} {{ primitive[1]['q'] }}
+  </li>
+</ul>
+<ul>
+  <li *ngFor="let hobject of hobjects | async">
+    {{ primitive }}
+  </li>
+</ul>

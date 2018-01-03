@@ -1,4 +1,11 @@
-# HotendMs
+# Hotend-MS
+
+hotend content management system
+
+a cms relying entirely on firebase as data backend, allowing to build up content types
+within the firebase backend itself
+
+# Development notes
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.3.
 
