@@ -41,15 +41,23 @@ export const htmlPrimitives = {
 
 class InputType {
     name: string;
+    hype: string; //hobject type
     primitive: boolean;
+    required: boolean;
+    choices: string[];
     quantity: number;
 
-    constructor({name,
-		 primitive,
+    constructor({name, hype,
+		 primitive = true,
+		 required = true,
+		 choices = [],
 		 quantity = 1
 		 }) {
 	this.name = name;
+	this.hype = hype;
 	this.primitive = primitive;
+	this.required = required;
+	this.choices = choices;
 	this.quantity = quantity;
     }
 }
@@ -58,7 +66,9 @@ class InputObject {
     name: string;
     inputs: InputType[];
     
-    constructor() {
+    constructor({name,inputs}) {
+	this.name = name;
+	this.inputs = inputs;
     }
 }
 
@@ -76,6 +86,7 @@ export class AdminComponent implements OnInit {
     primitivesList: any;
     hobjectdefs: Observable<any[]>; // HTML input object definitions
     hobjectdefsRef: AngularFireList<any>;
+    newhobjectdef: InputObject;
     hotends: Observable<any[]>;     // HTML input object instances
     
     constructor(db: AngularFireDatabase) {
@@ -84,7 +95,8 @@ export class AdminComponent implements OnInit {
 	this.primitivesRef = db.object('input_primitives');
 	this.primitives = this.primitivesRef.valueChanges();
 	this.hobjectdefsRef = db.list('input_object_definitions');
-	this.primitives = this.primitivesRef.valueChanges();
+	this.hobjectdefs = this.hobjectdefsRef.valueChanges();
+	this.newhobjectdef = new InputObject({name:'',inputs:[new InputType({name:'',hype:''})]});
     }
 
     ngOnInit() {
@@ -97,6 +109,16 @@ export class AdminComponent implements OnInit {
 		console.log(this.primitiveNames);
 	    }
 	);
+    }
+
+    addInput() {
+	this.newhobjectdef.inputs.push(new InputType({name:'',hype:''}));
+    }
+
+    submitInputDef() {
+	console.log(this.newhobjectdef);
+	this.hobjectdefsRef.push(this.newhobjectdef)
+	this.newhobjectdef = new InputObject({name:'',inputs:[new InputType({name:'',hype:''})]});
     }
 
 }
