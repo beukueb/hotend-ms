@@ -72,6 +72,8 @@ class InputObject {
     }
 }
 
+//renderTemplate = eval("hotend => {console.log(1)}") // concept for rendering functions
+
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
