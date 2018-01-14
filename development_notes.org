@@ -217,7 +217,28 @@
    - in constructor, e.g. `console.log(locale);`
 ** placeholder images
    - /width[xheight][.type][/bgcolor][/fgcolor][?text=lorem]
-   - http://via.placeholder.com/900x300.png/333333/000000?text=carousel1
+   -
+     http://via.placeholder.com/900x300.png/333333/000000?text=carousel1
+** hotend-ms specific
+*** components
+    #+BEGIN_SRC sh
+      ng g c admin
+    #+END_SRC
+*** services
+    #+BEGIN_SRC sh
+      mkdir src/app/hotservices
+      for service in primitives hotends renderTemplateFunctions; do
+        ng generate class hotservices/$service
+        ng generate service hotservices/$service
+        serviceName=${service^}Service #capitalize service name
+        # Filepath does not work for camelcased service like renderTemplateFunctions -> replace capitals with '-' followed by lowercase
+        sed -i -e 's#// Hotservices#// Hotservices \'$'\n'"import { ${serviceName} } from './hotservices/${service}.service';#g" src/app/app.module.ts
+        sed -i -e "s#providers: \[#providers: \[${serviceName},#g" src/app/app.module.ts
+      done
+    #+END_SRC
+**** hook up service
+     - add service import to component file that uses the service
+     - inject service into a component's constructor
 * Deploy
   - in root `firebase init`
   - in app/app.module.ts:
