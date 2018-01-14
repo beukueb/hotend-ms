@@ -8,7 +8,12 @@
 <h2>HTML object definitions</h2>
 <ul>
   <li *ngFor="let hobjectdef of hotends.hobjectdefs | async">
-    {{ hobjectdef }}
+    {{ hobjectdef['name'] }}
+    <ol>
+      <li *ngFor="let input of hobjectdef['inputs']">
+	{{ input['name'] }} {{ input['hype'] }} {{ input['quantity'] }}
+      </li>
+    </ol>
   </li>
 </ul>
 
@@ -21,13 +26,18 @@
   <fieldset *ngFor="let input of hotends.newhobjectdef.inputs; let i = index">
     <label for="input_name_{{ i }}">Input name</label>
     <input type="text" [(ngModel)]="input.name" name="input_name_{{ i
-						      }}" id="input_name_{{ i }}">
+						      }}"
+						      id="input_name_{{
+						      i }}" required>
     <label for="input_hype_{{ i }}">Input type</label>
     <input type="text" [attr.list]="'hype_options_'+i" [(ngModel)]="input.hype" name="input_hype_{{ i
 									  }}" id="input_hype_{{ i }}">
     <datalist id="hype_options_{{ i }}">
       <ng-container *ngFor="let typename of primitives.primitiveNames" >
 	<option value="{{ typename }}">
+      </ng-container>
+      <ng-container *ngFor="let hobjectdef of hotends.hobjectdefs | async" >
+	<option value="{{ hobjectdef['name'] }}">
       </ng-container>
     </datalist>
 
@@ -46,3 +56,8 @@
   <button type="button" (click)="hotends.addInput()">Add input</button>
   <button type="button" (click)="hotends.submitInputDef()">Submit input definition</button>
 </form>
+
+<h2>HTML object instances (hotends)</h2>
+<div *ngFor="let hobjectdef of hotends.hobjectdefs | async">
+  {{ hobjectdef['name'] }}
+</div>

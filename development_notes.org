@@ -223,6 +223,8 @@
 *** components
     #+BEGIN_SRC sh
       ng g c admin
+      ng g c hotend
+      ng g class hotend/hotend
     #+END_SRC
 *** services
     #+BEGIN_SRC sh

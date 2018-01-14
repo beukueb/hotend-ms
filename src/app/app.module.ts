@@ -17,6 +17,7 @@ import { NavComponent } from './nav/nav.component';
 import { PrimitivesService } from './hotservices/primitives.service';
 import { HotendsService } from './hotservices/hotends.service';
 import { RenderTemplateFunctionsService } from './hotservices/render-template-functions.service';
+import { HotendComponent } from './hotend/hotend.component';
 
 const appRoutes: Routes = [
     { path: 'home', component: HomeComponent },
@@ -33,7 +34,8 @@ const appRoutes: Routes = [
     AppComponent,
     HomeComponent,
     AdminComponent,
-    NavComponent
+    NavComponent,
+    HotendComponent
   ],
   imports: [
       BrowserModule,
