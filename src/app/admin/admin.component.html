@@ -1,13 +1,13 @@
 <h2>Primitives</h2>
 <ul>
-  <li *ngFor="let primitive of primitivesList">
+  <li *ngFor="let primitive of primitives.primitivesList">
     {{ primitive[0] }} {{ primitive[1]['js'] }} {{ primitive[1]['q'] }}
   </li>
 </ul>
 
 <h2>HTML object definitions</h2>
 <ul>
-  <li *ngFor="let hobjectdef of hobjectdefs | async">
+  <li *ngFor="let hobjectdef of hotends.hobjectdefs | async">
     {{ hobjectdef }}
   </li>
 </ul>
@@ -15,10 +15,10 @@
 <h3>New HTML object definition</h3>
 <form id="submitHTMLdefinition">
   <label for="newhobjectdef_name">Input object definition name</label>
-  <input type="text" [(ngModel)]="newhobjectdef.name"
+  <input type="text" [(ngModel)]="hotends.newhobjectdef.name"
 	 name="newhobjectdef_name" id="newhobjectdef_name"
 	 placeholder="new object definition name">
-  <fieldset *ngFor="let input of newhobjectdef.inputs; let i = index">
+  <fieldset *ngFor="let input of hotends.newhobjectdef.inputs; let i = index">
     <label for="input_name_{{ i }}">Input name</label>
     <input type="text" [(ngModel)]="input.name" name="input_name_{{ i
 						      }}" id="input_name_{{ i }}">
@@ -26,7 +26,7 @@
     <input type="text" [attr.list]="'hype_options_'+i" [(ngModel)]="input.hype" name="input_hype_{{ i
 									  }}" id="input_hype_{{ i }}">
     <datalist id="hype_options_{{ i }}">
-      <ng-container *ngFor="let typename of primitiveNames" >
+      <ng-container *ngFor="let typename of primitives.primitiveNames" >
 	<option value="{{ typename }}">
       </ng-container>
     </datalist>
@@ -43,6 +43,6 @@
     <input type="number" [(ngModel)]="input.quantity" name="input_quantity_{{ i
 						      }}" id="input_quantity_{{ i }}">
   </fieldset>
-  <button type="button" (click)="addInput()">Add input</button>
-  <button type="button" (click)="submitInputDef()">Submit input definition</button>
+  <button type="button" (click)="hotends.addInput()">Add input</button>
+  <button type="button" (click)="hotends.submitInputDef()">Submit input definition</button>
 </form>

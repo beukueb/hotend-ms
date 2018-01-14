@@ -22,48 +22,14 @@ import { InputObject } from '../hotservices/hotends';
 })
 export class AdminComponent implements OnInit {
 
-    db: AngularFireDatabase;
-    primitives: Observable<any>;    // HTML input primitives
-    primitivesRef: AngularFireObject<any>;
-    primitiveNames: String[];
-    primitivesList: any;
-    hobjectdefs: Observable<any[]>; // HTML input object definitions
-    hobjectdefsRef: AngularFireList<any>;
-    newhobjectdef: InputObject;
-    hotends: Observable<any[]>;     // HTML input object instances
     renderFunctions: any;
     
-    constructor(db: AngularFireDatabase, private _renderService: RenderTemplateFunctionsService) {
-	this.primitivesList = [];
-	this.primitiveNames = [];
-	this.primitivesRef = db.object('input_primitives');
-	this.primitives = this.primitivesRef.valueChanges();
-	this.hobjectdefsRef = db.list('input_object_definitions');
-	this.hobjectdefs = this.hobjectdefsRef.valueChanges();
-	this.newhobjectdef = new InputObject({name:'',inputs:[new InputType({name:'',hype:''})]});
-    }
+    constructor(public primitives: PrimitivesService, public hotends: HotendsService, private _renderService: RenderTemplateFunctionsService) { }
 
     ngOnInit() {
-	// Check if hot primitives are defined
-	this.primitives.subscribe(
-	    v => {
-		if (!v) this.primitivesRef.set(htmlPrimitives);
-		this.primitivesList = Object.entries(v);
-		this.primitiveNames = Object.keys(v);
-	    }
-	);
+	console.log(this.primitives);
 	this.renderFunctions = this._renderService.getRenderFunctions();
-	console.log(this.renderFunctions);
-    }
-
-    addInput() {
-	this.newhobjectdef.inputs.push(new InputType({name:'',hype:''}));
-    }
-
-    submitInputDef() {
-	console.log(this.newhobjectdef);
-	this.hobjectdefsRef.push(this.newhobjectdef)
-	this.newhobjectdef = new InputObject({name:'',inputs:[new InputType({name:'',hype:''})]});
+	//console.log(this.renderFunctions);
     }
 
 }

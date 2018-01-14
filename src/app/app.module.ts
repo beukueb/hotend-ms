@@ -15,6 +15,7 @@ import { NavComponent } from './nav/nav.component';
 
 // Hotservices
 import { PrimitivesService } from './hotservices/primitives.service';
+import { HotendsService } from './hotservices/hotends.service';
 import { RenderTemplateFunctionsService } from './hotservices/render-template-functions.service';
 
 const appRoutes: Routes = [
@@ -42,7 +43,7 @@ const appRoutes: Routes = [
       RouterModule.forRoot(appRoutes),
       FormsModule
   ],
-  providers: [PrimitivesService,RenderTemplateFunctionsService],
+  providers: [PrimitivesService,HotendsService,RenderTemplateFunctionsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
