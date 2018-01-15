@@ -7,8 +7,8 @@
 
 <h2>HTML object definitions</h2>
 <ul>
-  <li *ngFor="let hobjectdef of hotends.hobjectdefs | async">
-    {{ hobjectdef['name'] }}
+  <li *ngFor="let hobjectdef of hotends.hobjectdefList">
+    {{ hobjectdef }}
     <ol>
       <li *ngFor="let input of hobjectdef['inputs']">
 	{{ input['name'] }} {{ input['hype'] }} {{ input['quantity'] }}
@@ -58,6 +58,6 @@
 </form>
 
 <h2>HTML object instances (hotends)</h2>
-<div *ngFor="let hobjectdef of hotends.hobjectdefs | async">
-  {{ hobjectdef['name'] }}
+<div *ngFor="let hobjectdef of hotends.hobjectdefList">
+  <app-hotend [hype]="hobjectdef"></app-hotend>
 </div>

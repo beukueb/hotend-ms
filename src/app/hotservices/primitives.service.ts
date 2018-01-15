@@ -17,15 +17,23 @@ export class PrimitivesService {
 	this.primitiveNames = [];
 	this.primitivesRef = _db.object('input_primitives');
 	this.primitives = this.primitivesRef.valueChanges();
-	
-	// Check if the primitives are already defined in firebase
-	this.primitives.subscribe(
-	    v => {
-		if (!v) this.primitivesRef.set(htmlPrimitives);
+
+	_db.database.ref(".info/connected").on("value", snap => {
+	    if (snap.val() === true) { // connected to firebase
+		// Check if the primitives are already defined in firebase
+		this.primitives.subscribe(
+		    v => {
+			if (!v) this.primitivesRef.set(htmlPrimitives);
+			else localStorage.setItem('input_primitives', JSON.stringify(v));
+			this.primitivesList = Object.entries(v);
+			this.primitiveNames = Object.keys(v);
+		    }
+		);
+	    } else { // not connected to firebase
+		let v = JSON.parse(localStorage.getItem('input_primitives'));
 		this.primitivesList = Object.entries(v);
 		this.primitiveNames = Object.keys(v);
 	    }
-	);
+	});
     }
-
 }
