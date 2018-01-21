@@ -34,18 +34,14 @@ export class HotendsService {
 			    i => new InputObject({
 				name: i['name'],
 				inputs: i['inputs'].map(j => new InputType(j))}));
-			   
-			console.log(this.hobjectdefMap);
 		    });
 	    } else { // not connected to firebase
 		let v = JSON.parse(localStorage.getItem('input_object_definitions'));
-		/*for (let hobjectdef of v) {
-		    this.hobjectdefMap.set(
-			hobjectdef['name'],
-			new InputObject({name:hobjectdef['name'],
-					 inputs:hobjectdef['inputs'].map(i => new InputType(i))
-					}));
-		}*/
+		this.hobjectdefMap = v.map(i => i['name']);
+		this.hobjectdefList = v.map(
+		    i => new InputObject({
+			name: i['name'],
+			inputs: i['inputs'].map(j => new InputType(j))}));
 	    }
 	});
     }
@@ -66,11 +62,11 @@ export class HotendsService {
     }
 
     // hotend content functions
-    addHotend(hotend) {
-	console.log('here hotend will be added');
+    addHotend(hypename,hotname,hotdata) {
+	this._db.object(`input_object_instances/${hypename}/${hotname}`).set(hotdata);
     }
 
-    retrieveHotend(name) {
-	console.log('here hotend will be retrieved');
+    retrieveHotend(hypename,hotname) {
+	return this._db.object(`input_object_instances/${hypename}/${hotname}`).valueChanges();
     }
 }

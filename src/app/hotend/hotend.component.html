@@ -1,4 +1,31 @@
-<div>
+<div *ngIf="edit">
   <h2>New {{ hype['name'] }}</h2>
-  
+  <form>
+    <fieldset *ngFor="let hotendfieldset of hotend.fieldsetList; let j = index">
+      <legend>{{ hotend.fieldsetNames[j] }}:</legend>
+      <div *ngIf="!j">
+	<label for="hotend_name">Content name</label><input type="text"
+	[(ngModel)]="hotend.name" name="hotend_name">
+      </div>
+      <div *ngFor="let input of hotendfieldset; let i = index">
+	<label for="input_hotend_{{ j }}_{{ i }}_0">{{ input[0]
+	  }}</label>
+	<ng-container *ngFor="let value of input[2]; let k = index">
+	<input type="{{ input[1] }}" [(ngModel)]="value.value"
+	       name="input_hotend_{{ j }}_{{ i }}_{{ k }}"
+	       id="input_hotend_{{ j }}_{{ i }}_{{ k }}">
+	</ng-container>
+	<button *ngIf="!input[3]" (click)="input[4](input[2])">Add field</button>
+      </div>
+    </fieldset>
+    <button (click)="hotend.submitHotend()">Submit hotend</button>
+  </form>
+</div>
+
+<!--hotend display-->
+<div *ngIf="name">
+  <h2>{{ name }}</h2>
+  <p>
+    {{ dataTree }}
+  </p>
 </div>

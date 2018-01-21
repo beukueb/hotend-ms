@@ -27,7 +27,7 @@ export class AdminComponent implements OnInit {
     constructor(public primitives: PrimitivesService, public hotends: HotendsService, private _renderService: RenderTemplateFunctionsService) { }
 
     ngOnInit() {
-	console.log(this.primitives);
+	console.log(this.hotends);
 	this.renderFunctions = this._renderService.getRenderFunctions();
 	//console.log(this.renderFunctions);
     }

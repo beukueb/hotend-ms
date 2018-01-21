@@ -11,17 +11,18 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { siteconfig } from '../sites/default';
 import { HomeComponent } from './home/home.component';
 import { AdminComponent } from './admin/admin.component';
+import { HotendComponent } from './hotend/hotend.component';
 import { NavComponent } from './nav/nav.component';
 
 // Hotservices
 import { PrimitivesService } from './hotservices/primitives.service';
 import { HotendsService } from './hotservices/hotends.service';
 import { RenderTemplateFunctionsService } from './hotservices/render-template-functions.service';
-import { HotendComponent } from './hotend/hotend.component';
 
 const appRoutes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'admin', component: AdminComponent },
+    { path: 'hotend/:hypename/:name', component: HotendComponent },
     { path: '',
       redirectTo: '/home',
       pathMatch: 'full'
