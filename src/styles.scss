@@ -1,0 +1,24 @@
+/* You can add global styles to this file, and also import other style files */
+
+// Bootstrap sass variables
+$gray-base:             #411917;
+$brand-primary:         darken(#411917, 6.5%);
+$brand-success:         #d4cb6c;
+$brand-info:            #a15531;
+$brand-warning:         #b7150a;
+$brand-danger:          #fbcc74;
+
+// Imports
+@import "~bootstrap/scss/bootstrap.scss";
+@import "~font-awesome/css/font-awesome.css";
+
+// Custom scss
+.carousel {
+    height: 400px;
+    text-align: center;
+    outline: none;
+    
+    img {
+	margin: auto;
+    }
+}

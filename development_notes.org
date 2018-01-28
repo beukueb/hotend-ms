@@ -151,7 +151,7 @@
       ],
     - rename 'styles.css' to 'styles.scss'
     - in styles.scss:
-      @import "../node_modules/bootstrap/scss/bootstrap.scss";
+      @import "~bootstrap/scss/bootstrap.scss";
 
 *** Start with different bootstrap template
 

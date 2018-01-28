@@ -41,7 +41,7 @@ import { FooterComponent } from './footer/footer.component';
       FormsModule,
       MarkdownModule.forRoot(),
       AppRoutingModule,
-      SiteComponentsModule
+      SiteComponentsModule,
   ],
   providers: [PrimitivesService,HotendsService,RenderTemplateFunctionsService],
   bootstrap: [AppComponent]
