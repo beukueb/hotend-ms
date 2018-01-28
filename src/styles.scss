@@ -22,3 +22,8 @@ $brand-danger:          #fbcc74;
 	margin: auto;
     }
 }
+
+.footer,.header {
+    background-color: $brand-primary;
+    color: white;
+}
