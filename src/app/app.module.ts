@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { MarkdownModule } from 'ngx-markdown';
 
 import { AppComponent } from './app.component';
 
@@ -12,17 +13,20 @@ import { siteconfig } from '../sites/default';
 import { HomeComponent } from './home/home.component';
 import { AdminComponent } from './admin/admin.component';
 import { HotendComponent } from './hotend/hotend.component';
+import { HotlistComponent } from './hotlist/hotlist.component';
 import { NavComponent } from './nav/nav.component';
 
 // Hotservices
 import { PrimitivesService } from './hotservices/primitives.service';
 import { HotendsService } from './hotservices/hotends.service';
 import { RenderTemplateFunctionsService } from './hotservices/render-template-functions.service';
+import { FooterComponent } from './footer/footer.component';
 
 const appRoutes: Routes = [
     { path: 'home', component: HomeComponent },
     { path: 'admin', component: AdminComponent },
     { path: 'hotend/:hypename/:name', component: HotendComponent },
+    { path: 'hotend/:hypename', component: HotlistComponent },
     { path: '',
       redirectTo: '/home',
       pathMatch: 'full'
@@ -36,7 +40,9 @@ const appRoutes: Routes = [
     HomeComponent,
     AdminComponent,
     NavComponent,
-    HotendComponent
+    HotendComponent,
+    FooterComponent,
+    HotlistComponent
   ],
   imports: [
       BrowserModule,
@@ -44,7 +50,8 @@ const appRoutes: Routes = [
       AngularFireDatabaseModule,
       AngularFireAuthModule,
       RouterModule.forRoot(appRoutes),
-      FormsModule
+      FormsModule,
+      MarkdownModule.forRoot()
   ],
   providers: [PrimitivesService,HotendsService,RenderTemplateFunctionsService],
   bootstrap: [AppComponent]

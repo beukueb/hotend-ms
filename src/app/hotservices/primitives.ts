@@ -25,6 +25,7 @@ export const htmlPrimitives = {
     'range': {'js':['Number','Number'], 'q': 2},
     'tel': {'js':'String', 'q': 1},
     'text': {'js':'String', 'q': 1},
+    'textarea': {'js':'String', 'q': 1},
     'time': {'js':'Number', 'q': 1},
     'url': {'js':'String', 'q': 1},
     'week': {'js':'Number', 'q': 1}

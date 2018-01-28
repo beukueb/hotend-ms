@@ -1,0 +1,8 @@
+<div class="container">
+  <h2>{{ hype }} items</h2>
+  <ul>
+    <li *ngFor="let hotend of hotendsObs | async">
+      <a href="/hotend/{{ hype }}/{{ hotend.key }}">{{ hotend.key }}</a>
+    </li>
+  </ul>
+</div>

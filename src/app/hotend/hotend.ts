@@ -27,7 +27,6 @@ export class Hotend {
 		    this.dataTree = d;
 		    console.log(this.dataTree);
 	    });
-	    console.log('Retrieving',this.name,this.dataTree);
 	}
     }
 

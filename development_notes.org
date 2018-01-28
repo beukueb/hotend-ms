@@ -154,7 +154,7 @@
       @import "../node_modules/bootstrap/scss/bootstrap.scss";
 
 *** Start with different bootstrap template
-    
+
 ** Add ng-bootstrap widget
    https://ng-bootstrap.github.io/#/home
    - Add `import {NgbModule} from '@ng-bootstrap/ng-bootstrap';` to src/app/app.module.ts
@@ -222,8 +222,12 @@
 ** hotend-ms specific
 *** components
     #+BEGIN_SRC sh
+      ng g c nav
+      ng g c home
+      ng g c footer
       ng g c admin
       ng g c hotend
+      ng g c hotlist
       ng g class hotend/hotend
     #+END_SRC
 *** services
@@ -241,6 +245,17 @@
 **** hook up service
      - add service import to component file that uses the service
      - inject service into a component's constructor
+*** markdown enabled textarea input
+    #+BEGIN_SRC sh
+      npm install ngx-markdown --save
+    #+END_SRC
+    + "../node_modules/marked/lib/marked.js" in `.angular-cli.json`
+      scripts
+    + `import { MarkdownModule } from 'ngx-markdown';` in
+      `app.module.ts`
+    + MarkdownModule.forRoot() in `app.module.ts` imports
+    - following works as proof of concept:
+        <div *ngIf="hotend.dataTree" [innerHTML]="hotend.dataTree.testarea.area[0].value | markdown"></div>
 * Deploy
   - in root `firebase init`
   - in app/app.module.ts:

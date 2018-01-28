@@ -11,9 +11,13 @@
 	<label for="input_hotend_{{ j }}_{{ i }}_0">{{ input[0]
 	  }}</label>
 	<ng-container *ngFor="let value of input[2]; let k = index">
-	<input type="{{ input[1] }}" [(ngModel)]="value.value"
+	<input *ngIf="input[1]!='textarea'" type="{{ input[1] }}" [(ngModel)]="value.value"
 	       name="input_hotend_{{ j }}_{{ i }}_{{ k }}"
 	       id="input_hotend_{{ j }}_{{ i }}_{{ k }}">
+	<textarea *ngIf="input[1]=='textarea'" rows="4" cols="50" [(ngModel)]="value.value"
+		  name="input_hotend_{{ j }}_{{ i }}_{{ k }}"
+		  id="input_hotend_{{ j }}_{{ i }}_{{ k }}">
+	</textarea>
 	</ng-container>
 	<button *ngIf="!input[3]" (click)="input[4](input[2])">Add field</button>
       </div>
@@ -23,9 +27,9 @@
 </div>
 
 <!--hotend display-->
-<div *ngIf="name">
+<div class="container" *ngIf="name">
   <h2>{{ name }}</h2>
   <p>
-    {{ dataTree }}
+    {{ hotend.dataTree | json }}
   </p>
 </div>

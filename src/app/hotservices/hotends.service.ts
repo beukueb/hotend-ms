@@ -69,4 +69,11 @@ export class HotendsService {
     retrieveHotend(hypename,hotname) {
 	return this._db.object(`input_object_instances/${hypename}/${hotname}`).valueChanges();
     }
+
+    retrieveHotends(hypename) {
+	return this._db.list(`input_object_instances/${hypename}`).snapshotChanges().map(
+	    actions => {
+		return actions.map(action => ({ key: action.key, ...action.payload.val() }));
+	    });
+    }
 }
