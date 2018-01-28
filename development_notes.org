@@ -230,16 +230,21 @@
       ng g c hotlist
       ng g class hotend/hotend
     #+END_SRC
+*** modules
+    #+BEGIN_SRC sh
+      ng generate module app-routing --flat --module=app
+      ng generate module site-components --flat --module=app
+    #+END_SRC
 *** services
     #+BEGIN_SRC sh
       mkdir src/app/hotservices
       for service in primitives hotends renderTemplateFunctions; do
         ng generate class hotservices/$service
-        ng generate service hotservices/$service
+        ng generate service hotservices/$service --module=app
         serviceName=${service^}Service #capitalize service name
         # Filepath does not work for camelcased service like renderTemplateFunctions -> replace capitals with '-' followed by lowercase
-        sed -i -e 's#// Hotservices#// Hotservices \'$'\n'"import { ${serviceName} } from './hotservices/${service}.service';#g" src/app/app.module.ts
-        sed -i -e "s#providers: \[#providers: \[${serviceName},#g" src/app/app.module.ts
+        #sed -i -e 's#// Hotservices#// Hotservices \'$'\n'"import { ${serviceName} } from './hotservices/${service}.service';#g" src/app/app.module.ts
+        #sed -i -e "s#providers: \[#providers: \[${serviceName},#g" src/app/app.module.ts
       done
     #+END_SRC
 **** hook up service
@@ -255,7 +260,38 @@
       `app.module.ts`
     + MarkdownModule.forRoot() in `app.module.ts` imports
     - following works as proof of concept:
-        <div *ngIf="hotend.dataTree" [innerHTML]="hotend.dataTree.testarea.area[0].value | markdown"></div>
+        <div *ngIf="hotend.dataTree"
+      [innerHTML]="hotend.dataTree.testarea.area[0].value |
+      markdown"></div>
+** hotend-ms site implementation
+*** create src/sites/default.ts
+    #+BEGIN_SRC js
+      // Site configuration
+      export const siteconfig = {
+          production: false,
+          firebase: { // get info from https://console.firebase.google.com/
+              apiKey: "",
+              authDomain: "",
+              databaseURL: "",
+              projectId: "",
+              storageBucket: "",
+              messagingSenderId: ""
+          },
+      };
+
+      // Site routes
+      import { Routes } from '@angular/router';
+      import { HomeComponent } from '../app/home/home.component';
+
+      export const siteroutes: Routes = [
+          { path: 'home', component: HomeComponent },
+      ];
+    #+END_SRC
+*** create site specific components
+    #+BEGIN_SRC sh
+      ng g c sites/blogmsg --module=site-components
+      ng g c sites/bloglist --module=site-components
+    #+END_SRC
 * Deploy
   - in root `firebase init`
   - in app/app.module.ts:
@@ -282,3 +318,8 @@
     #+END_SRC
   - `ng build --prod`
   - `firebase deploy`
+** Documentation
+*** observables
+    import { of } from 'rxjs/observable/of'; 
+    => then with `return of(some_array)` you can return an observable
+    emiting one value, the array

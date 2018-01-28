@@ -1,8 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MarkdownModule } from 'ngx-markdown';
+import { AppRoutingModule } from './app-routing.module';
+import { SiteComponentsModule } from './site-components.module';
 
 import { AppComponent } from './app.component';
 
@@ -22,18 +23,6 @@ import { HotendsService } from './hotservices/hotends.service';
 import { RenderTemplateFunctionsService } from './hotservices/render-template-functions.service';
 import { FooterComponent } from './footer/footer.component';
 
-const appRoutes: Routes = [
-    { path: 'home', component: HomeComponent },
-    { path: 'admin', component: AdminComponent },
-    { path: 'hotend/:hypename/:name', component: HotendComponent },
-    { path: 'hotend/:hypename', component: HotlistComponent },
-    { path: '',
-      redirectTo: '/home',
-      pathMatch: 'full'
-    },
-    //{ path: '**', component: PageNotFoundComponent }
-];
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,9 +38,10 @@ const appRoutes: Routes = [
       AngularFireModule.initializeApp(siteconfig["firebase"]),
       AngularFireDatabaseModule,
       AngularFireAuthModule,
-      RouterModule.forRoot(appRoutes),
       FormsModule,
-      MarkdownModule.forRoot()
+      MarkdownModule.forRoot(),
+      AppRoutingModule,
+      SiteComponentsModule
   ],
   providers: [PrimitivesService,HotendsService,RenderTemplateFunctionsService],
   bootstrap: [AppComponent]
