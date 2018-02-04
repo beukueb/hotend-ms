@@ -13,6 +13,20 @@ $brand-danger:          #fbcc74;
 @import "~font-awesome/css/font-awesome.css";
 
 // Custom scss
+// Custom scss
+$header-height:          70px;
+$footer-height:          70px;
+
+html {
+    position: relative; 
+    min-height: 100%;
+}
+
+html,body {
+    margin: 0;
+    padding: 0;
+}
+
 .carousel {
     height: 400px;
     text-align: center;
@@ -23,7 +37,29 @@ $brand-danger:          #fbcc74;
     }
 }
 
+.router-content {
+    margin-top: $header-height;
+    margin-bottom: $footer-height;
+}
+
 .footer,.header {
     background-color: $brand-primary;
     color: white;
+    .fullheight,table {
+	// use table to combine with .align-middle in header or footer
+	// all enclosing div's have to have .fullheight
+	height: 100%;
+    }
+}
+
+.header {
+    height: $header-height;
+}
+
+.footer {
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    position: absolute;
+    height: $footer-height;
 }

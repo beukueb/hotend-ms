@@ -11,6 +11,19 @@
    #+BEGIN_SRC sh
      npm update -g
    #+END_SRC
+** Start new site that runs on hotend-ms
+   - Manually create a fork (replace '${newname}' with your new project's name):
+     #+BEGIN_SRC sh
+       git clone https://github.com/beukueb/hotend-ms.git ${newname} && cd ${newname}
+       git remote rename origin upstream
+       git remote add origin https://github.com/beukueb/${newname}.git
+       git remote -v #check remotes
+       npm install
+     #+END_SRC
+   - Create `src/sites/default.ts`, as per instructions further in
+     this documentation
+
+   - `firebase init`
 * Make Firebase project
   - https://console.firebase.google.com/
   - select "Adding Firebase to web app" to copy config
