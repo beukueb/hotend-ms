@@ -1,6 +1,6 @@
 # Hotend-MS
 
-<img title="Hotend-MS logo" src="hotend_logo.svg" width="300">
+<img title="Hotend-MS logo" src="hotend_logo.svg" width="200">
 
 hotend content management system
 
