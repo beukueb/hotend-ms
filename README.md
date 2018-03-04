@@ -1,5 +1,7 @@
 # Hotend-MS
 
+<img title="Hotend-MS logo" src="hotend_logo.svg" width="300">
+
 hotend content management system
 
 a cms relying entirely on firebase as data backend, allowing to build up content types

@@ -9,22 +9,20 @@ $brand-warning:         #b7150a;
 $brand-danger:          #fbcc74;
 
 // Imports
+@import "~normalize.css/normalize.css";
 @import "~bootstrap/scss/bootstrap.scss";
 @import "~font-awesome/css/font-awesome.css";
 
 // Custom scss
-// Custom scss
+// Custom variables
 $header-height:          70px;
 $footer-height:          70px;
+// Imprt to overide site specific variables
+@import "./sites/site-theme.scss";
 
 html {
     position: relative; 
     min-height: 100%;
-}
-
-html,body {
-    margin: 0;
-    padding: 0;
 }
 
 .carousel {
@@ -40,6 +38,7 @@ html,body {
 .router-content {
     margin-top: $header-height;
     margin-bottom: $footer-height;
+    padding-top: 1rem;
 }
 
 .footer,.header {

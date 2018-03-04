@@ -18,12 +18,17 @@
        git remote rename origin upstream
        git remote add origin https://github.com/beukueb/${newname}.git
        git remote -v #check remotes
+       git rm development_notes.org #so hotend-ms is only reference for documentation
        npm install
+       touch src/sites/site-theme.scss
      #+END_SRC
    - Create `src/sites/default.ts`, as per instructions further in
      this documentation
 
    - `firebase init`
+   - To update to latest hotend-ms version:
+     - `git pull upstream master`
+     - to resolve merge conflicts: `git mergetool`
 * Make Firebase project
   - https://console.firebase.google.com/
   - select "Adding Firebase to web app" to copy config
